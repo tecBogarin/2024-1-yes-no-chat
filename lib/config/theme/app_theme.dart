@@ -23,3 +23,4 @@ class Apptheme {
       colorSchemeSeed: _colorThemes[selectedColor],
       brightness: Brightness.light);
 }
+
