@@ -1,0 +1,1 @@
+GET http://yesno.wtf/api HTTP/1.1
