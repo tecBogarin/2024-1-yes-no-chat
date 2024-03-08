@@ -6,67 +6,48 @@ class MessageFieldBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textController = TextEditingController();
-    final enfoque = FocusNode();
+    final focusNode = FocusNode();
 
-    final UnderlineInputBorder outLineInputBorder = UnderlineInputBorder(
-        borderSide: const BorderSide(color: Colors.transparent),
-        borderRadius: BorderRadius.circular(20));
+    return TextFormField(
+      controller: textController,
+      focusNode: focusNode,
+      onTapOutside: (event) {
+        focusNode.unfocus();
+      },
+      onFieldSubmitted: (value) {
+        print('Valor enviado: $value');
+        textController.clear();
+        focusNode.requestFocus();
+      },
+      decoration: _buildInputDecoration(
+        inputBorder: _outlineInputBorder(),
+        onPressed: () => _onPressed(textController: textController),
+      ),
+    );
+  }
 
-    final decoration = InputDecoration(
-        hintText: 'ingresa tu pregunta y terminarla con signo ?',
-        enabledBorder: outLineInputBorder,
-        focusedBorder: outLineInputBorder,
+  UnderlineInputBorder _outlineInputBorder() => const UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.transparent),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      );
+
+  InputDecoration _buildInputDecoration({
+    required InputBorder inputBorder,
+    required VoidCallback onPressed,
+  }) =>
+      InputDecoration(
+        enabledBorder: inputBorder,
+        focusedBorder: inputBorder,
         filled: true,
         suffixIcon: IconButton(
           icon: const Icon(Icons.send_and_archive_outlined),
-          onPressed: () {
-            final textValue = textController.value.text;
-            print('impresion dle boton de envio: $textValue');
-            textController.clear();
-          },
-        ));
+          onPressed: onPressed,
+        ),
+      );
 
-    // return TextFormField(decoration: decoration);
-    return TextFormField(
-        controller: textController,
-        focusNode: enfoque,
-        onFieldSubmitted: (value) {
-          print('es el submit valor: $value');
-          textController.clear();
-          enfoque.requestFocus();
-        },
-        onTapOutside: (event) {
-          enfoque.unfocus();
-        },
-        decoration: setDecoration(
-            inputBorder: OutLineInputBorder(),
-            onPressed: () => onPressed2(textController: textController)));
-  }
-
-  UnderlineInputBorder OutLineInputBorder() => UnderlineInputBorder(
-      borderSide: const BorderSide(color: Colors.transparent),
-      borderRadius: BorderRadius.circular(20));
-
-  InputDecoration setDecoration(
-          {required inputBorder, required void Function() onPressed}) =>
-      InputDecoration(
-          enabledBorder: inputBorder,
-          focusedBorder: inputBorder,
-          filled: true,
-          suffixIcon: IconButton(
-            icon: const Icon(Icons.send_and_archive_outlined),
-            onPressed: onPressed,
-          ));
-
-  onPress({required TextEditingController textController}) {
-    final textValue = textController.value.text;
-    print('impresion dle boton de envio: $textValue');
-    textController.clear();
-  }
-
-  onPressed2({required TextEditingController textController}) {
-    final textValue = textController.value.text;
-    print('impresión de la nueva función: $textValue');
+  void _onPressed({required TextEditingController textController}) {
+    final textValue = textController.text;
+    print('Valor de la nueva función: $textValue');
     textController.clear();
   }
 }
