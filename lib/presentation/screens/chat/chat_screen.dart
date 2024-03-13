@@ -40,6 +40,7 @@ class _ChatView extends StatelessWidget {
         children: [
           Expanded(
               child: ListView.builder(
+                  controller: chatProvider.chatController,
                   itemCount: chatProvider.messageList.length,
                   itemBuilder: ((context, index) {
                     return (chatProvider.messageList[index].fromWho ==
